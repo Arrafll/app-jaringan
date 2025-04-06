@@ -137,7 +137,7 @@
   --bs-secondary-color: rgba(222, 226, 230, 0.75);
   --bs-secondary-color-rgb: 222, 226, 230;
   --bs-secondary-bg: #343a40;
-  --bs-secondary-bg-rgb: 52, 58, 64;
+  --bs-secondary-bg-rgb: 30, 30, 30;
   --bs-tertiary-color: rgba(222, 226, 230, 0.5);
   --bs-tertiary-color-rgb: 222, 226, 230;
   --bs-tertiary-bg: #2b3035;
@@ -205,6 +205,9 @@ body {
   background-color: var(--bs-body-bg);
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+.search-btn:hover {
+  opacity: 0.6;
 }
 
 hr {
