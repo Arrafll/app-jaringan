@@ -13100,14 +13100,16 @@ textarea.form-control-lg {
 .sidebar-wrapper .sidebar-menu > .nav-item > .nav-link:active, .sidebar-wrapper .sidebar-menu > .nav-item > .nav-link:focus {
   color: var(--lte-sidebar-color);
 }
+/*  this is*/
 .sidebar-wrapper .sidebar-menu > .nav-item > .nav-link.active:not(:hover) {
-  color: var(--lte-sidebar-menu-active-color);
-  background-color: var(--lte-sidebar-menu-active-bg);
+  color: var(--lte-sidebar-active -color);
+  border-right: 3px solid var(--lte-sidebar-menu-active-bg);
 }
 .sidebar-wrapper .sidebar-menu > .nav-item.menu-open > .nav-link, .sidebar-wrapper .sidebar-menu > .nav-item:hover > .nav-link,
 .sidebar-wrapper .sidebar-menu > .nav-item > .nav-link:focus {
   color: var(--lte-sidebar-hover-color);
-  background-color: var(--lte-sidebar-hover-bg);
+  border-right: 3px solid var(--lte-sidebar-hover-bg);
+
 }
 .sidebar-wrapper .sidebar-menu > .nav-item > .nav-treeview {
   background-color: var(--lte-sidebar-submenu-bg);
@@ -13162,7 +13164,7 @@ textarea.form-control-lg {
 .sidebar-menu .nav-link {
   position: relative;
   transition: width ease-in-out 0.3s;
-  border-radius: 0.375rem;
+  /* border-radius: 0.375rem; */
 }
 @media (prefers-reduced-motion: reduce) {
   .sidebar-menu .nav-link {
@@ -13823,11 +13825,11 @@ body:not(.app-loaded) .app-footer {
 
 [data-bs-theme=dark].app-sidebar,
 [data-bs-theme=dark] .app-sidebar {
-  --lte-sidebar-hover-bg: rgba(255, 255, 255, 0.1);
+  --lte-sidebar-hover-bg: #E98C23;
   --lte-sidebar-color: #c2c7d0;
-  --lte-sidebar-hover-color: #fff;
-  --lte-sidebar-active-color: #fff;
-  --lte-sidebar-menu-active-bg: rgba(255, 255, 255, 0.1);
+  --lte-sidebar-hover-color: #E98C23;
+  --lte-sidebar-active-color: #E98C23;
+  --lte-sidebar-menu-active-bg: #E98C23;
   --lte-sidebar-menu-active-color: #fff;
   --lte-sidebar-submenu-bg: transparent;
   --lte-sidebar-submenu-color: #c2c7d0;
