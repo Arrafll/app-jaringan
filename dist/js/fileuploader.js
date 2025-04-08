@@ -61,6 +61,7 @@ function typeValidation(type){
             title: 'Upload gagal!',
             text: 'Pastikan format file benar',
             icon: 'error',
+            confirmButtonColor: '#ef8b23',
             confirmButtonText: 'Oke'
         })
     }
@@ -103,6 +104,7 @@ function uploadFile(file){
         title: 'Upload berhasil!',
         text: '',
         icon: 'success',
+        confirmButtonColor: '#ef8b23',
         confirmButtonText: 'Oke'
     })
     
