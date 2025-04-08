@@ -13102,7 +13102,7 @@ textarea.form-control-lg {
 }
 /*  this is*/
 .sidebar-wrapper .sidebar-menu > .nav-item > .nav-link.active:not(:hover) {
-  color: var(--lte-sidebar-active -color);
+  color: var(--lte-sidebar-active-color);
   border-right: 3px solid var(--lte-sidebar-menu-active-bg);
 }
 .sidebar-wrapper .sidebar-menu > .nav-item.menu-open > .nav-link, .sidebar-wrapper .sidebar-menu > .nav-item:hover > .nav-link,
