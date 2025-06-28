@@ -1,3 +1,16 @@
+<?php
+session_start();
+if (!isset($_SESSION['user'])) {
+  header("Location: login.php");
+}
+
+
+if ($_SESSION['user']['role'] == 2) {
+  header("Location: koreksi.php");
+}
+
+?>
+
 <!doctype html>
 <html lang="en">
 <!--begin::Head-->
@@ -9,11 +22,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!--end::Primary Meta Tags-->
 
-  <link rel="stylesheet" href="../../dist/css/adminlte.css" />
-  <link rel="stylesheet" href="../../dist/css/fileupload.css" />
+  <link rel="stylesheet" href="dist/css/adminlte.css" />
+  <link rel="stylesheet" href="dist/css/fileupload.css" />
   <!-- load icons -->
-  <link rel="stylesheet" href="../assets/icons/bootstrap-icons-1.11.3/font/bootstrap-icons.css" />
-  <link href="../assets/plugins/sweetalert/dist/sweetalert2.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="dist/assets/icons/bootstrap-icons-1.11.3/font/bootstrap-icons.css" />
+  <link href="dist/assets/plugins/sweetalert/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
 
 
@@ -46,14 +59,19 @@
           <!--begin::User Menu Dropdown-->
           <li class="nav-item dropdown user-menu">
             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-              <img src="../../dist/assets/img/user2-160x160.jpg" class="user-image rounded-circle shadow"
-                alt="User Image" />
-              <span class="d-none d-md-inline">Acha</span>
+              <?php if ($_SESSION['user']['pic']): ?>
+                <img src="uploads/<?= $_SESSION['user']['pic']; ?>" class="user-image rounded-circle shadow"
+                  alt="User Image" />
+              <?php else: ?>
+                <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="user-image rounded-circle shadow"
+                  alt="User Image" />
+              <?php endif; ?>
+              <span class="d-none d-md-inline"><?= $_SESSION['user']['username']; ?></span>
             </a>
             <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
               <!--begin::User Image-->
               <li class="user-header text-bg-primary">
-                <img src="../../dist/assets/img/user2-160x160.jpg" class="rounded-circle shadow" alt="User Image" />
+                <img src="dist/assets/img/user2-160x160.jpg" class="rounded-circle shadow" alt="User Image" />
                 <p>
                   Acha - Web Developer
                   <small>Member since Nov. 2023</small>
@@ -63,7 +81,7 @@
               <!--begin::Menu Footer-->
               <li class="user-footer">
                 <div class="d-flex justify-content-between">
-                  <a href="#" class="btn btn-default btn-flat" style="width: 48%;">Profile</a>
+                  <a href="profile.php" class="btn btn-default btn-flat" style="width: 48%;">Profile</a>
                   <a href="#" class="btn btn-default btn-flat float-end" style="width: 48%;">Sign out</a>
                 </div>
               </li>
@@ -84,7 +102,7 @@
         <!--begin::Brand Link-->
         <a href="#" class="brand-link">
           <!--begin::Brand Image-->
-          <img src="../assets/img/logo_kopin.png" alt="AdminLTE Logo" class="brand-image opacity-75 shadow" />
+          <img src="dist/assets/img/logo_kopin.png" alt="AdminLTE Logo" class="brand-image opacity-75 shadow" />
           <!--end::Brand Image-->
         </a>
         <!--end::Brand Link-->
@@ -108,32 +126,32 @@
 
             </li>
             <li class="nav-item">
-              <a href="../pages/upload.html" class="nav-link active">
+              <a href="upload.php" class="nav-link active">
                 <i class="nav-icon bi bi-cloud-upload"></i>
                 <p>Upload</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="../pages/koreksi.html" class="nav-link">
-                  <i class="nav-icon bi bi-pencil-square"></i>
-                  <p>Koreksi</p>
+              <a href="koreksi.php" class="nav-link">
+                <i class="nav-icon bi bi-pencil-square"></i>
+                <p>Koreksi</p>
               </a>
-          </li>
-          <li class="nav-item">
-              <a href="../pages/tracking.html" class="nav-link">
-                  <i class="nav-icon bi bi-graph-up-arrow"></i>
-                  <p>Tracking</p>
+            </li>
+            <li class="nav-item">
+              <a href="tracking.php" class="nav-link">
+                <i class="nav-icon bi bi-graph-up-arrow"></i>
+                <p>Tracking</p>
               </a>
-          </li>
+            </li>
             <li class="nav-header">PENGATURAN</li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="profile.php" class="nav-link">
                 <i class="nav-icon bi bi-person-fill"></i>
                 <p>Profile</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
+              <a href="#" class="nav-link" onclick="logoutConfirm(this)">
                 <i class="nav-icon bi bi-arrow-left-square"></i>
                 <p>Sign Out</p>
               </a>
@@ -182,7 +200,7 @@
             <div class="drop-section">
               <div class="col">
                 <div class="cloud-icon">
-                  <img src="../assets/img/cloud.png" alt="cloud" width="100px">
+                  <img src="dist/assets/img/cloud.png" alt="cloud" width="100px">
                 </div>
                 <span>Drag & Drop file di sini</span>
                 <span>Atau</span>
@@ -220,15 +238,16 @@
   <!--end::App Wrapper-->
   <!--begin::Script-->
 </body>
-<script src="../js/jquery.3.7.1.min.js"></script>
-<script src="../assets/plugins/@popperjs/core/dist/umd/popper.min.js"></script>
+<script src="dist/js/jquery.3.7.1.min.js"></script>
+<script src="dist/assets/plugins/@popperjs/core/dist/umd/popper.min.js"></script>
 <!--end::Required Plugin(popperjs for Bootstrap 5)--><!--be>
 ::Required Plugin(Bootstrap 5)-->
-<script src="../js/bootstrap5.min.js"></script>
+<script src="dist/js/bootstrap5.min.js"></script>
 <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
-<script src="../../dist/js/adminlte.js"></script>
-<script src="../js/fileuploader.js"></script>
-<script src="../assets/plugins/sweetalert/dist/sweetalert2.min.js"></script>
+<script src="dist/js/adminlte.js"></script>
+<script src="dist/js/fileuploader.js"></script>
+<script src="dist/assets/plugins/sweetalert/dist/sweetalert2.min.js"></script>
+<script src="dist/js/auth.js"></script>
 
 
 </html>

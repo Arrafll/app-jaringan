@@ -13105,8 +13105,7 @@ textarea.form-control-lg {
   color: var(--lte-sidebar-active-color);
   border-right: 3px solid var(--lte-sidebar-menu-active-bg);
 }
-.sidebar-wrapper .sidebar-menu > .nav-item.menu-open > .nav-link, .sidebar-wrapper .sidebar-menu > .nav-item:hover > .nav-link,
-.sidebar-wrapper .sidebar-menu > .nav-item > .nav-link:focus {
+.sidebar-wrapper .sidebar-menu > .nav-item:hover > .nav-link {
   color: var(--lte-sidebar-hover-color);
   border-right: 3px solid var(--lte-sidebar-hover-bg);
 
@@ -15380,5 +15379,23 @@ html.maximized-card {
 .img-size-32 {
   width: 32px;
 }
+
+.borderless table {
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+    border-bottom-style: none;
+}
+
+ .upload-btn {
+        color: white;
+        background-color: #ef8b23;
+        border: none;
+        outline: none;
+        padding: 7px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    }
 
 /*# sourceMappingURL=adminlte.css.map */

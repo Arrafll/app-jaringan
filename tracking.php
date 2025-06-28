@@ -9,13 +9,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!--end::Primary Meta Tags-->
 
-    <link rel="stylesheet" href="../../dist/css/adminlte.css" />
-    <link rel="stylesheet" href="../../dist/css/fileupload.css" />
+    <link rel="stylesheet" href="dist/css/adminlte.css" />
+    <link rel="stylesheet" href="dist/css/fileupload.css" />
     <!-- load icons -->
-    <link rel="stylesheet" href="../assets/icons/bootstrap-icons-1.11.3/font/bootstrap-icons.css" />
-    <link href="../assets/plugins/sweetalert/dist/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="dist/assets/icons/bootstrap-icons-1.11.3/font/bootstrap-icons.css" />
+    <link href="dist/assets/plugins/sweetalert/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
+<?php
 
+
+session_start();
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+}
+
+require_once('config/get_inquiry.php');
+
+
+?>
 
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
     <!--begin::App Wrapper-->
@@ -46,14 +57,19 @@
                     <!--begin::User Menu Dropdown-->
                     <li class="nav-item dropdown user-menu">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <img src="../../dist/assets/img/user2-160x160.jpg" class="user-image rounded-circle shadow"
-                                alt="User Image" />
-                            <span class="d-none d-md-inline">Acha</span>
+                            <?php if ($_SESSION['user']['pic']): ?>
+                                <img src="uploads/<?= $_SESSION['user']['pic']; ?>" class="user-image rounded-circle shadow"
+                                    alt="User Image" />
+                            <?php else: ?>
+                                <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png"
+                                    class="user-image rounded-circle shadow" alt="User Image" />
+                            <?php endif; ?>
+                            <span class="d-none d-md-inline"><?= $_SESSION['user']['username']; ?></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                             <!--begin::User Image-->
                             <li class="user-header text-bg-primary">
-                                <img src="../../dist/assets/img/user2-160x160.jpg" class="rounded-circle shadow"
+                                <img src="dist/assets/img/user2-160x160.jpg" class="rounded-circle shadow"
                                     alt="User Image" />
                                 <p>
                                     Acha - Web Developer
@@ -86,7 +102,8 @@
                 <!--begin::Brand Link-->
                 <a href="#" class="brand-link">
                     <!--begin::Brand Image-->
-                    <img src="../assets/img/logo_kopin.png" alt="AdminLTE Logo" class="brand-image opacity-75 shadow" />
+                    <img src="dist/assets/img/logo_kopin.png" alt="AdminLTE Logo"
+                        class="brand-image opacity-75 shadow" />
                     <!--end::Brand Image-->
                 </a>
                 <!--end::Brand Link-->
@@ -112,33 +129,35 @@
 
 
                         </li>
+                        <?php if ($_SESSION['user']['role'] == 1): ?>
+                            <li class="nav-item">
+                                <a href="upload.php" class="nav-link active">
+                                    <i class="nav-icon bi bi-cloud-upload"></i>
+                                    <p>Upload</p>
+                                </a>
+                            </li>
+                        <?php endif; ?>
                         <li class="nav-item">
-                            <a href="../pages/upload.html" class="nav-link">
-                                <i class="nav-icon bi bi-cloud-upload"></i>
-                                <p>Upload</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="../pages/koreksi.html" class="nav-link">
+                            <a href="koreksi.php" class="nav-link">
                                 <i class="nav-icon bi bi-pencil-square"></i>
                                 <p>Koreksi</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../pages/tracking.html" class="nav-link active">
+                            <a href="tracking.php" class="nav-link active">
                                 <i class="nav-icon bi bi-graph-up-arrow"></i>
                                 <p>Tracking</p>
                             </a>
                         </li>
                         <li class="nav-header">PENGATURAN</li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
+                           <li class="nav-item">
+                            <a href="profile.php" class="nav-link">
                                 <i class="nav-icon bi bi-person-fill"></i>
                                 <p>Profile</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="#" class="nav-link" onclick="logoutConfirm($(this).parent())">
                                 <i class="nav-icon bi bi-arrow-left-square"></i>
                                 <p>Sign Out</p>
                             </a>
@@ -197,107 +216,32 @@
                                                 <th width="5%">Aging</th>
                                                 <th width="15%">Remark</th>
                                                 <th width="5%">Status</th>
-                                                <th width="15%">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class="text-center">
-                                                <td>AFTER TIANG
-                                                </td>
-                                                <td>TEGAL-LARANGAN</td>
-                                                <td>TG06-5</td>
-                                                <td>13 Nov 2024</td>
-                                                <td>70</td>
-                                                <td>
-                                                    Foto tiang tidak dicor / tidak ada remarks
-                                                </td>
-                                                <td><span class="badge text-bg-danger">Rejected</span></td>
-                                                <td class="text-center">
-                                                    <button type="button" class="btn btn-sm btn-info text-white"> <i
-                                                            class="nav-icon bi bi-eye"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-warning text-white"> <i
-                                                            class="nav-icon bi bi-pencil-fill"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-danger"><i
-                                                            class="nav-icon bi bi-trash"></i></button>
-                                                </td>
-                                            </tr>
+                                            <?php if (isset($inquiry['result'])): ?>
+                                                <?php foreach ($inquiry['result'] as $i): ?>
 
-                                            <tr class="text-center">
-                                                <td>AFTER TIANG</td>
-                                                <td>TEGAL-LARANGAN</td>
-                                                <td>TG06-6</td>
-                                                <td>13 Nov 2024</td>
-                                                <td>70</td>
-                                                <td>
-                                                    cor tidak pernah
-                                                </td>
-                                                <td><span class="badge text-bg-danger">Rejected</span></td>
-                                                <td class="text-center">
-                                                    <button type="button" class="btn btn-sm btn-info text-white"> <i
-                                                            class="nav-icon bi bi-eye"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-warning text-white"> <i
-                                                            class="nav-icon bi bi-pencil-fill"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-danger"><i
-                                                            class="nav-icon bi bi-trash"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr class="text-center">
-                                                <td>AFTER TIANG</td>
-                                                <td>TEGAL-LARANGAN</td>
-                                                <td>TG06-16</td>
-                                                <td>13 Nov 2024</td>
-                                                <td>70</td>
-                                                <td>
-                                                    cor tidak pernah
-                                                </td>
-                                                <td><span class="badge text-bg-danger">Rejected</span></td>
-                                                <td class="text-center">
-                                                    <button type="button" class="btn btn-sm btn-info text-white"> <i
-                                                            class="nav-icon bi bi-eye"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-warning text-white"> <i
-                                                            class="nav-icon bi bi-pencil-fill"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-danger"><i
-                                                            class="nav-icon bi bi-trash"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr class="text-center">
-                                                <td>AFTER TIANG</td>
-                                                <td>TEGAL-LARANGAN</td>
-                                                <td>TG06-21</td>
-                                                <td>13 Nov 2024</td>
-                                                <td>70</td>
-                                                <td>
-                                                    Foto tiang tidak dicor / tidak ada remarks
-                                                </td>
-                                                <td><span class="badge text-bg-danger">Rejected</span></td>
-                                                <td class="text-center">
-                                                    <button type="button" class="btn btn-sm btn-info text-white"> <i
-                                                            class="nav-icon bi bi-eye"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-warning text-white"> <i
-                                                            class="nav-icon bi bi-pencil-fill"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-danger"><i
-                                                            class="nav-icon bi bi-trash"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr class="text-center">
-                                                <td>AFTER TIANG</td>
-                                                <td>TEGAL-LARANGAN</td>
-                                                <td>TG06-23</td>
-                                                <td>13 Nov 2024</td>
-                                                <td>70</td>
-                                                <td>
-                                                    Foto tiang tidak dicor / tidak ada remarks
-                                                </td>
-                                                <td><span class="badge text-bg-danger">Rejected</span></td>
-                                                <td class="text-center">
-                                                    <button type="button" class="btn btn-sm btn-info text-white"> <i
-                                                            class="nav-icon bi bi-eye"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-warning text-white"> <i
-                                                            class="nav-icon bi bi-pencil-fill"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-danger"><i
-                                                            class="nav-icon bi bi-trash"></i></button>
-                                                </td>
-                                            </tr>
+                                                    <tr class="text-center">
+                                                        <td>AFTER TIANG
+                                                        </td>
+                                                        <td>TEGAL-LARANGAN</td>
+                                                        <td>TG06-5</td>
+                                                        <td>13 Nov 2024</td>
+                                                        <td>70</td>
+                                                        <td>
+                                                            Foto tiang tidak dicor / tidak ada remarks
+                                                        </td>
+                                                        <td></td>
+                                                        <!-- <td><span class="badge text-bg-danger"><?= $i['valid']; ?></span></td> -->
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
+                                                <tr>
+                                                    <td colspan="8" class="text-center">Tidak ada data</td>
+                                                </tr>
+                                            <?php endif; ?>
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -337,15 +281,15 @@
     <!--end::App Wrapper-->
     <!--begin::Script-->
 </body>
-<script src="../js/jquery.3.7.1.min.js"></script>
-<script src="../assets/plugins/@popperjs/core/dist/umd/popper.min.js"></script>
+<script src="dist/js/jquery.3.7.1.min.js"></script>
+<script src="dist/assets/plugins/@popperjs/core/dist/umd/popper.min.js"></script>
 <!--end::Required Plugin(popperjs for Bootstrap 5)--><!--be>
 ::Required Plugin(Bootstrap 5)-->
-<script src="../js/bootstrap5.min.js"></script>
+<script src="dist/js/bootstrap5.min.js"></script>
 <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
-<script src="../../dist/js/adminlte.js"></script>
-<script src="../js/fileuploader.js"></script>
-<script src="../assets/plugins/sweetalert/dist/sweetalert2.min.js"></script>
+<script src="dist/js/adminlte.js"></script>
+<script src="dist/js/fileuploader.js"></script>
+<script src="dist/assets/plugins/sweetalert/dist/sweetalert2.min.js"></script>
 
 
 </html>

@@ -74,13 +74,18 @@ function uploadFile(file){
     li.classList.add('in-prog')
     li.innerHTML = `
         <div class="col">
-            <img src="../assets/img/${iconSelector(file.type)}" alt="">
+            <img src="dist/assets/img/${iconSelector(file.type)}" alt="">
         </div>
         <div class="col">
             <div class="file-name">
+
+            <div>
                 <div class="name">${file.name}</div>
+                <div class="percentageup"><span class="mt-2">0%</span> </div>
             </div>
-            <div class="file-size" style="display:block">${(file.size/(1024*1024)).toFixed(2)} MB</div>
+                   <div class="file-size" style="display:block">${(file.size/(1024*1024)).toFixed(2)} MB</div>
+            </div>  
+            <div class="file-progress"></div>
         </div>
         <div class="col">
             <svg xmlns="http://www.w3.org/2000/svg" class="cross" height="20" width="20"><path d="m5.979 14.917-.854-.896 4-4.021-4-4.062.854-.896 4.042 4.062 4-4.062.854.896-4 4.062 4 4.021-.854.896-4-4.063Z"/></svg>
@@ -88,11 +93,6 @@ function uploadFile(file){
         </div>
     `
 
-    // ` 
-    //    <span>0%</span>
-    // <div class="file-progress">
-    //             <span></span>
-    //         </div>`
 
     listContainer.prepend(li)
     $(li).find('.cross').click(function(){
@@ -111,22 +111,22 @@ function uploadFile(file){
     
     // Script di bawah bisa dipakai untuk upload ke backend via AJAX Call
     
-    // var http = new XMLHttpRequest();
-    // var data = new FormData()
-    // data.append('file', file)
-    // http.onload = () => {
-    //     li.classList.add('complete')
-    //     li.classList.remove('in-prog')
-    // }
-    // http.upload.onprogress = (e) => {
-    //     var percent_complete = (e.loaded / e.total)*100
-    //     li.querySelectorAll('span')[0].innerHTML = Math.round(percent_complete) + '%'
-    //     li.querySelectorAll('span')[1].style.width = percent_complete + '%'
-    // }
-    // http.open('POST', 'sender.php', true)
-    // http.send(data)
-    // li.querySelector('.cross').onclick = () => http.abort()
-    // http.onabort = () => li.remove()
+    var http = new XMLHttpRequest();
+    var data = new FormData()
+    data.append('file', file)
+    http.onload = () => {
+        li.classList.add('complete')
+        li.classList.remove('in-prog')
+    }
+    http.upload.onprogress = (e) => {
+        var percent_complete = (e.loaded / e.total)*100
+        li.querySelectorAll('span')[0].innerHTML = Math.round(percent_complete) + '%'
+        li.querySelectorAll('span')[1].style.width = percent_complete + '%'
+    }
+    http.open('POST', 'sender.php', true)
+    http.send(data)
+    li.querySelector('.cross').onclick = () => http.abort()
+    http.onabort = () => li.remove()
 }
 // find icon for file
 function iconSelector(type){
