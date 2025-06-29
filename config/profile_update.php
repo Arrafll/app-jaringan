@@ -36,7 +36,7 @@ $sql = "SELECT * FROM users WHERE id='$id'";
 $result = $conn->query($sql);
 $uploadDir = "../uploads/";
 
-if (isset($_FILES['pic'])) {
+if (!empty($_FILES['pic']['name'])) {
 
     unlink($uploadDir . $user['pic']);
 

@@ -7,7 +7,7 @@ if (!isset($_SESSION['user'])) {
 $profile_update = isset($_SESSION['profile_update']) ? $_SESSION['profile_update'] : "";
 unset($_SESSION['profile_update']);
 
-
+require_once "config/profile_activity.php";
 ?>
 
 <!doctype html>
@@ -345,52 +345,39 @@ unset($_SESSION['profile_update']);
                                     <div class="tab-pane fade" id="nav-contact" role="tabpanel"
                                         aria-labelledby="nav-contact-tab">
                                         <div class="col-md-12 mt-4">
-                                            <!-- The time line -->  
-                                            <div class="timeline">
-                                                <!-- timeline time label -->
+                                            <!-- The time line -->
 
-                                                <!-- /.timeline-label -->
 
-                                                <!-- timeline item -->
-                                                <div>
-                                                    <i class="timeline-icon bi bi-person text-bg-success"></i>
-                                                    <div class="timeline-item">
-                                                        <span class="time"> <i class="bi bi-clock-fill"></i> 5 mins ago
-                                                        </span>
-                                                        <h3 class="timeline-header no-border">
-                                                            <a href="#">Sarah Young</a> accepted your friend request
-                                                        </h3>
-                                                        <div class="timeline-body">
-                                                            Take me to your leader! Switzerland is small and neutral! We
-                                                            are more like
-                                                            Germany, ambitious and misunderstood!
+                                            <?php if (count($pdf) > 0): ?>
+                                                <div class="timeline">
+                                                    <!-- timeline time label -->
+
+                                                    <!-- /.timeline-label -->
+
+                                                    <!-- timeline item -->
+                                                    <?php foreach ($pdf as $p): ?>
+                                                        <div>
+                                                            <i class="timeline-icon bi bi-person text-bg-warning"></i>
+                                                            <div class="timeline-item">
+                                                                <span class="time"> <i class="bi bi-clock-fill"></i>
+                                                                    <?= $p['created_at']; ?>
+                                                                </span>
+                                                                <h3 class="timeline-header no-border">
+                                                                    <a href="#"><?= $_SESSION['user']['name']; ?></a>
+                                                                </h3>
+                                                                <div class="timeline-body">
+                                                                    Mengupload dokumen <?= $p['name']; ?>
+                                                                </div>
+                                                            </div>
                                                         </div>
+                                                        <!-- END timeline item -->
+                                                    <?php endforeach; ?>
+                                                    <div><i class="timeline-icon bi bi-clock-fill text-bg-warning"></i>
                                                     </div>
                                                 </div>
-                                                <!-- END timeline item -->
-                                                <!-- timeline item -->
-                                                <div>
-                                                    <i class="timeline-icon bi bi-chat-text-fill text-bg-warning"></i>
-                                                    <div class="timeline-item">
-                                                        <span class="time"> <i class="bi bi-clock-fill"></i> 27 mins ago
-                                                        </span>
-                                                        <h3 class="timeline-header">
-                                                            <a href="#">Jay White</a> commented on your post
-                                                        </h3>
-                                                        <div class="timeline-body">
-                                                            Take me to your leader! Switzerland is small and neutral! We
-                                                            are more like
-                                                            Germany, ambitious and misunderstood!
-                                                        </div>
-                                                        <div class="timeline-footer">
-                                                            <a class="btn btn-warning btn-sm">View comment</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- END timeline item -->
-                                                <div><i class="timeline-icon bi bi-clock-fill text-bg-secondary"></i>
-                                                </div>
-                                            </div>
+                                            <?php else: ?>
+                                                <div class="text-center">Belum ada aktivitas</div>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 </div>
