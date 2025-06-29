@@ -81,11 +81,11 @@ function uploadFile(file){
 
             <div>
                 <div class="name">${file.name}</div>
-                <div class="percentageup"><span class="mt-2">0%</span> </div>
+                <div class="percentageup"><span class="mt-2">0%</span></div>
             </div>
                    <div class="file-size" style="display:block">${(file.size/(1024*1024)).toFixed(2)} MB</div>
             </div>  
-            <div class="file-progress"></div>
+            <div class="file-progress"><span style="background-color:#ef8b23;"></span> </div>
         </div>
         <div class="col">
             <svg xmlns="http://www.w3.org/2000/svg" class="cross" height="20" width="20"><path d="m5.979 14.917-.854-.896 4-4.021-4-4.062.854-.896 4.042 4.062 4-4.062.854.896-4 4.062 4 4.021-.854.896-4-4.063Z"/></svg>

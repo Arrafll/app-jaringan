@@ -63,7 +63,7 @@ if ($_SESSION['user']['role'] == 2) {
                 <img src="uploads/<?= $_SESSION['user']['pic']; ?>" class="user-image rounded-circle shadow"
                   alt="User Image" />
               <?php else: ?>
-                <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="user-image rounded-circle shadow"
+                <img src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="user-image rounded-circle shadow"
                   alt="User Image" />
               <?php endif; ?>
               <span class="d-none d-md-inline"><?= $_SESSION['user']['username']; ?></span>
