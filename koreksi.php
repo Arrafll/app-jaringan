@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="dist/assets/icons/bootstrap-icons-1.11.3/font/bootstrap-icons.css" />
     <link href="dist/assets/plugins/sweetalert/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
+
 <?php
 
 session_start();
@@ -23,7 +24,6 @@ if (!isset($_SESSION['user'])) {
 }
 
 require_once('config/get_inquiry.php');
-
 
 
 ?>
@@ -132,7 +132,7 @@ require_once('config/get_inquiry.php');
                         </li>
                         <?php if ($_SESSION['user']['role'] == 1): ?>
                             <li class="nav-item">
-                                <a href="upload.php" class="nav-link active">
+                                <a href="upload.php" class="nav-link">
                                     <i class="nav-icon bi bi-cloud-upload"></i>
                                     <p>Upload</p>
                                 </a>
@@ -158,7 +158,7 @@ require_once('config/get_inquiry.php');
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link" onclick="logoutConfirm($(this).parent())">
+                            <a href="#" class="nav-link" onclick="logoutConfirm(this)">
                                 <i class="nav-icon bi bi-arrow-left-square"></i>
                                 <p>Sign Out</p>
                             </a>
@@ -210,7 +210,46 @@ require_once('config/get_inquiry.php');
                                 <!--end::Header-->
                                 <!--begin::Body-->
                                 <div class="card-body">
-                                    <embed src="uploads/pdf-example.pdf" width="100%" height="650px" />
+                                    <div>
+                                        <h6 class="text-secondary mb-3">File : <?= $pdf['name']; ?></h6>
+                                        <?php if ($inquiry['status'] == "in_process"): ?>
+                                            <h6 class="text-secondary mb-3">Status : <span
+                                                    class="badge rounded-pill text-bg-primary">In Process</span></h6>
+                                        <?php else: ?>
+                                            <h6 class="text-secondary mb-3">Status : <span
+                                                    class="badge rounded-pill text-bg-success">Completed</span></h6>
+                                        <?php endif; ?>
+                                        <div class="progress mb-2" role="progressbar"
+                                            aria-label="Warning striped example" aria-valuenow="75" aria-valuemin="0"
+                                            aria-valuemax="100" style="border-radius:5px;">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
+                                                style="width: <?= $inquiry['progress']; ?>%; border-radius: 0.375rem">
+                                                <?= $inquiry['progress']; ?>%
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <?php if (isset($inquiry['result'])): ?>
+                                            <?php foreach ($inquiry['result'] as $r): ?>
+                                                <?php if ($r['page_valid'] == "false"): ?>
+                                                    <div class="col-md-12 mt-3 col-lg-12">
+                                                        <img src="<?= $r['url']; ?>" class="img-fluid" alt="image">
+                                                    </div>
+                                                    <div class="col-md-12 mt-3 col-lg-12">
+                                                        <img src="<?= $r['url']; ?>" class="img-fluid" alt="image">
+                                                    </div>
+                                                    <div class="col-md-12 mt-3 col-lg-12">
+                                                        <img src="<?= $r['url']; ?>" class="img-fluid" alt="image">
+                                                    </div>
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <div class="col-md-12 text-center">
+                                                Data belum tersedia
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
                                 <!--end::Body-->
                             </div>
@@ -239,15 +278,17 @@ require_once('config/get_inquiry.php');
     <!--end::App Wrapper-->
     <!--begin::Script-->
 </body>
-<script src="js/jquery.3.7.1.min.js"></script>
-<script src="assets/plugins/@popperjs/core/dist/umd/popper.min.js"></script>
+<script src="dist/js/jquery.3.7.1.min.js"></script>
+<script src="dist/assets/plugins/@popperjs/core/dist/umd/popper.min.js"></script>
 <!--end::Required Plugin(popperjs for Bootstrap 5)--><!--be>
 ::Required Plugin(Bootstrap 5)-->
-<script src="js/bootstrap5.min.js"></script>
+<script src="dist/js/bootstrap5.min.js"></script>
 <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
 <script src="dist/js/adminlte.js"></script>
-<script src="js/fileuploader.js"></script>
-<script src="assets/plugins/sweetalert/dist/sweetalert2.min.js"></script>
+<script src="dist/js/fileuploader.js"></script>
+<script src="dist/assets/plugins/sweetalert/dist/sweetalert2.min.js"></script>
+<script src="dist/js/auth.js"></script>
+
 
 
 </html>

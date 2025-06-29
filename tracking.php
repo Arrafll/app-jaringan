@@ -56,7 +56,7 @@ require_once('config/get_inquiry.php');
                     <!--end::Fullscreen Toggle-->
                     <!--begin::User Menu Dropdown-->
                     <li class="nav-item dropdown user-menu">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <a href="profile.php" class="nav-link">
                             <?php if ($_SESSION['user']['pic']): ?>
                                 <img src="uploads/<?= $_SESSION['user']['pic']; ?>" class="user-image rounded-circle shadow"
                                     alt="User Image" />
@@ -66,27 +66,6 @@ require_once('config/get_inquiry.php');
                             <?php endif; ?>
                             <span class="d-none d-md-inline"><?= $_SESSION['user']['username']; ?></span>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
-                            <!--begin::User Image-->
-                            <li class="user-header text-bg-primary">
-                                <img src="dist/assets/img/user2-160x160.jpg" class="rounded-circle shadow"
-                                    alt="User Image" />
-                                <p>
-                                    Acha - Web Developer
-                                    <small>Member since Nov. 2023</small>
-                                </p>
-                            </li>
-                            <!--end::User Image-->
-                            <!--begin::Menu Footer-->
-                            <li class="user-footer">
-                                <div class="d-flex justify-content-between">
-                                    <a href="#" class="btn btn-default btn-flat" style="width: 48%;">Profile</a>
-                                    <a href="#" class="btn btn-default btn-flat float-end" style="width: 48%;">Sign
-                                        out</a>
-                                </div>
-                            </li>
-                            <!--end::Menu Footer-->
-                        </ul>
                     </li>
                     <!--end::User Menu Dropdown-->
                 </ul>
@@ -131,7 +110,7 @@ require_once('config/get_inquiry.php');
                         </li>
                         <?php if ($_SESSION['user']['role'] == 1): ?>
                             <li class="nav-item">
-                                <a href="upload.php" class="nav-link active">
+                                <a href="upload.php" class="nav-link">
                                     <i class="nav-icon bi bi-cloud-upload"></i>
                                     <p>Upload</p>
                                 </a>
@@ -201,7 +180,7 @@ require_once('config/get_inquiry.php');
                         <div class="card mb-4">
                             <div class="card-header">
                                 <h3 class="card-title mt-2">Data Tracking</h3>
-                                <button class="btn btn-success float-end text-white">Download CSV</button>
+                                <a class="btn btn-success float-end text-white" href="config/tracking_export_csv.php">Download CSV</a>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
@@ -290,6 +269,8 @@ require_once('config/get_inquiry.php');
 <script src="dist/js/adminlte.js"></script>
 <script src="dist/js/fileuploader.js"></script>
 <script src="dist/assets/plugins/sweetalert/dist/sweetalert2.min.js"></script>
+<script src="dist/js/auth.js"></script>
+
 
 
 </html>

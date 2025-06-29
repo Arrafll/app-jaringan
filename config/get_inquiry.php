@@ -1,9 +1,25 @@
 <?php
 
+
+require_once "db.php";
+
+$conn = new Database();
+$conn = $conn->connect();
+
+
+$sql = "SELECT * FROM pdf_uploads ORDER BY created_at DESC LIMIT 1";
+$result = $conn->query($sql);
+$pdf = $result->fetch_assoc();
+$pdf_id = 1;
+
+if(isset($pdf)) {
+    $pdf_id = $pdf['pdf_id'];
+}
+
 $curl = curl_init();
 
 curl_setopt_array($curl, array(
-    CURLOPT_URL => 'http://api.doc-check.web.id/inquiry/1',
+    CURLOPT_URL => 'http://api.doc-check.web.id/inquiry/' . $pdf_id,
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => '',
     CURLOPT_MAXREDIRS => 10,
