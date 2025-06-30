@@ -129,7 +129,7 @@ require_once('config/get_inquiry.php');
                             </a>
                         </li>
                         <li class="nav-header">PENGATURAN</li>
-                           <li class="nav-item">
+                        <li class="nav-item">
                             <a href="profile.php" class="nav-link">
                                 <i class="nav-icon bi bi-person-fill"></i>
                                 <p>Profile</p>
@@ -180,12 +180,13 @@ require_once('config/get_inquiry.php');
                         <div class="card mb-4">
                             <div class="card-header">
                                 <h3 class="card-title mt-2">Data Tracking</h3>
-                                <a class="btn btn-success float-end text-white" href="config/tracking_export_csv.php">Download CSV</a>
+                                <a class="btn btn-success float-end text-white"
+                                    onclick="exportTableToCSV('trackingTable', 'tracking.csv')">Download CSV</a>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered ">
+                                    <table class="table table-bordered" id="trackingTable"> 
                                         <thead>
                                             <tr class="text-center">
                                                 <th width="20%">Photo</th>
@@ -200,20 +201,27 @@ require_once('config/get_inquiry.php');
                                         <tbody>
                                             <?php if (isset($inquiry['result'])): ?>
                                                 <?php foreach ($inquiry['result'] as $i): ?>
+                                                    <?php foreach ($i['groups'] as $group): ?>
+                                                        <tr class="text-center">
+                                                            <td><?= $inquiry['pdf_name']; ?>
+                                                            </td>
+                                                            <td><?= $i['page_name']; ?></td>
+                                                            <td><?= $group['pole_name']; ?></td>
+                                                            <td><?= $group['created_date']; ?></td>
+                                                            <td><?= $group['aging']; ?></td>
+                                                            <td>
+                                                                <?= $group['remark']; ?>
+                                                            </td>
+                                                            <td>
+                                                                <?php if ($group['valid'] == true): ?>
+                                                                    <span class="badge text-bg-success">Valid</span>
+                                                                <?php else: ?>
+                                                                    <span class="badge text-bg-danger">Invalid</span>
+                                                                <?php endif; ?>
+                                                            </td>
 
-                                                    <tr class="text-center">
-                                                        <td>AFTER TIANG
-                                                        </td>
-                                                        <td>TEGAL-LARANGAN</td>
-                                                        <td>TG06-5</td>
-                                                        <td>13 Nov 2024</td>
-                                                        <td>70</td>
-                                                        <td>
-                                                            Foto tiang tidak dicor / tidak ada remarks
-                                                        </td>
-                                                        <td></td>
-                                                        <!-- <td><span class="badge text-bg-danger"><?= $i['valid']; ?></span></td> -->
-                                                    </tr>
+                                                        </tr>
+                                                    <?php endforeach; ?>
                                                 <?php endforeach; ?>
                                             <?php else: ?>
                                                 <tr>
@@ -226,7 +234,7 @@ require_once('config/get_inquiry.php');
                                 </div>
                             </div>
                             <!-- /.card-body -->
-                            <div class="card-footer clearfix">
+                            <!-- <div class="card-footer clearfix">
                                 <ul class="pagination pagination-sm m-0 float-end">
                                     <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
                                     <li class="page-item"><a class="page-link" href="#">1</a></li>
@@ -234,7 +242,7 @@ require_once('config/get_inquiry.php');
                                     <li class="page-item"><a class="page-link" href="#">3</a></li>
                                     <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
                                 </ul>
-                            </div>
+                            </div> -->
                         </div>
                         <!-- /.card -->
                     </div>
@@ -267,10 +275,42 @@ require_once('config/get_inquiry.php');
 <script src="dist/js/bootstrap5.min.js"></script>
 <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
 <script src="dist/js/adminlte.js"></script>
-<script src="dist/js/fileuploader.js"></script>
 <script src="dist/assets/plugins/sweetalert/dist/sweetalert2.min.js"></script>
 <script src="dist/js/auth.js"></script>
 
+
+<script>
+
+    function exportTableToCSV(tableId, filename) {
+        const table = document.getElementById(tableId);
+        let csv = [];
+        const rows = table.querySelectorAll("tr");
+
+        for (let i = 0; i < rows.length; i++) {
+            const row = [];
+            const cols = rows[i].querySelectorAll("td, th"); // Include both data and header cells
+
+            for (let j = 0; j < cols.length; j++) {
+                row.push(cols[j].innerText);
+            }
+            csv.push(row.join(","));
+        }
+
+        const csvString = csv.join("\n");
+        const blob = new Blob([csvString], { type: "text/csv" });
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.download = filename;
+        a.href = url;
+        a.style.display = "none"; // Hide the link
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a); // Clean up
+        window.URL.revokeObjectURL(url); // Release the object URL
+    }
+
+</script>
 
 
 </html>

@@ -210,7 +210,7 @@ require_once('config/get_inquiry.php');
                                     <div class="row">
                                         <?php if (isset($inquiry['result'])): ?>
                                             <?php foreach ($inquiry['result'] as $r): ?>
-                                                <?php if ($r['page_valid'] == "false"): ?>
+                                                <?php if ($r['page_valid'] == false): ?>
                                                     <div class="col-md-12 mt-3 col-lg-12">
                                                         <img src="<?= $r['url']; ?>" class="img-fluid" alt="image">
                                                     </div>
